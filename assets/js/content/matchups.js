@@ -192,7 +192,7 @@ RF.guide.classes = {
     threats: [
       ['Sap', 'If they see you first, you stand still until they are ready.'],
       ['Cheap Shot and Kidney Shot', 'Your own chain against you.'],
-      ['Blind', 'Stops your attacks. Being Undead or having a PvP trinket gives you an edge here.'],
+      ['Blind', 'Stops your attacks. Will of the Forsaken does not remove it: it is a disorient, not a fear. Forever counts Blind as a poison, so a Dwarf\'s Stoneform does.'],
       ['Evasion', 'Your builders will be dodged. Consider stopping to wait it out.'],
       ['Vanish', 'They come back with another opener.'],
       ['Riposte', 'Disarms you for 6 seconds.'],

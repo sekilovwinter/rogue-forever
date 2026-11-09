@@ -3,17 +3,35 @@
   const esc = RF.esc;
   let tab = 'races', race = null;
   const TABS = [['races', 'Race'], ['leveling', 'Leveling path'], ['professions', 'Professions'], ['leatherworking', 'Leatherworking'], ['legacy', 'Legacy perks'], ['sources', 'Sources and honesty']];
+  function verdict() {
+    const V = RF.guide.raceVerdict, f = RF.prefs.faction;
+    const top = i => Math.max(...V.table.map(r => r[i]));
+    const cell = (r, i) => `<td style="text-align:right;font-variant-numeric:tabular-nums;${r[i] === top(i) ? 'color:#6fe9c6;font-weight:600' : ''}">+${r[i].toFixed(1)}%</td>`;
+    const rows = V.table.map(r => `<tr style="${f !== 'any' && r[1] !== f ? 'opacity:.45' : ''}"><td style="white-space:nowrap"><span class="chip ${r[1] === 'Horde' ? 'r' : 'b'}" style="margin-right:6px">${r[1][0]}</span>${esc(r[0])}</td>${cell(r, 2)}${cell(r, 3)}${cell(r, 4)}</tr>`).join('');
+    return `<div class="abhead">${RF.img('spell_shadow_raisedead', 44)}<div><h2>${esc(V.title)}</h2><div class="dim">${esc(V.lead)}</div></div></div>
+      <div class="ab-body"><div class="grid2" style="gap:14px;align-items:start">
+        <div><div class="cap" style="margin-bottom:6px">How much each race is worth, as damage, at level 60</div>
+          <table class="ranktbl"><thead><tr><th>Race</th><th style="text-align:right">Dungeons</th><th style="text-align:right">PvP</th><th style="text-align:right">Leveling</th></tr></thead><tbody>${rows}</tbody></table>
+          <div class="cap" style="margin:12px 0 6px">What each race breaks</div>${V.breaks.map(x => `<div class="row tk-${x[1] === 'No race' ? 'n' : 'g'}" style="min-height:28px"><div class="grow"><div class="t" style="font-size:12px">${esc(x[0])}</div></div><span class="end" style="font-size:12px">${esc(x[1])}</span></div>`).join('')}</div>
+        <div>${V.why.map(x => `<div class="why"><b>${esc(x[0])}</b>${esc(x[1])}</div>`).join('')}
+          <details class="fold"><summary>How it was worked out</summary><div class="in dim" style="font-size:12px">${esc(V.how)}</div></details>
+          <details class="fold"><summary>How sure this is</summary><div class="in dim" style="font-size:12px">${esc(V.sure)}</div></details></div>
+      </div></div>`;
+  }
   function races(R) {
     const f = RF.prefs.faction;
     const list = R.filter(r => f === 'any' || r.faction === f);
-    const r = list.find(x => x.id === race) || list[0];
-    race = r.id;
-    const w = RF.guide.raceWhy[r.race] || {};
-    return `<div class="split" style="grid-template-columns:268px minmax(0,1fr)"><div class="pane col"><div class="ablist">${list.map(x => `<div class="row click tk-${x.faction === 'Horde' ? 'r' : 'b'} ${x.id === r.id ? 'on' : ''}" data-race="${x.id}">${RF.img(x.icon, 28)}<div class="grow"><div class="t">${esc(x.race)}</div><div class="s">${esc((RF.guide.raceWhy[x.race] || {}).best || '')}</div></div></div>`).join('')}</div></div>
-      <div class="pane col"><div class="abhead">${RF.img(r.icon, 44)}<div><h2>${esc(r.race)}</h2><div class="dim">${esc(w.best || '')}</div><div class="factbar"><span class="chip ${r.faction === 'Horde' ? 'r' : 'b'}">${esc(r.faction)}</span></div></div></div>
+    const r = race === 'best' || !race ? null : list.find(x => x.id === race) || null;
+    race = r ? r.id : 'best';
+    const w = r ? RF.guide.raceWhy[r.race] || {} : {};
+    const cd = n => RF.guide.racialCd[n] ? ` <span class="chip" style="font-weight:500">${esc(RF.guide.racialCd[n])}</span>` : '';
+    const head = `<div class="row click tk-g ${!r ? 'on' : ''}" data-race="best">${RF.img('spell_shadow_raisedead', 28)}<div class="grow"><div class="t">Which race is best</div><div class="s">Undead, then Human</div></div></div>`;
+    const right = !r ? verdict() : `<div class="abhead">${RF.img(r.icon, 44)}<div><h2>${esc(r.race)}</h2><div class="dim">${esc(w.best || '')}</div><div class="factbar"><span class="chip ${r.faction === 'Horde' ? 'r' : 'b'}">${esc(r.faction)}</span></div></div></div>
       <div class="ab-body"><div class="grid2" style="margin-bottom:12px"><div class="why" style="margin:0"><b>For PvE and leveling</b>${esc(w.pve || '')}</div><div class="why" style="margin:0"><b>For PvP</b>${esc(w.pvp || '')}</div></div>
-      <div class="cap" style="margin-bottom:7px">Racial abilities in Forever</div>${r.abilities.map(a => `<div class="row tk-${a.change === 'added' ? 'g' : a.change === 'modified' ? 'a' : 'n'}" style="align-items:flex-start">${RF.img(a.icon, 28)}<div class="grow" style="white-space:normal"><div class="t">${esc(a.name)}${a.change === 'added' ? ' <span class="chip g">New</span>' : a.change === 'modified' ? ' <span class="chip a">Changed</span>' : ''}</div><div class="dim" style="font-size:12px;white-space:pre-wrap">${esc(a.text)}</div></div></div>`).join('')}
-      <p class="mut" style="font-size:11.5px;margin-top:8px">Your race changes small margins, never the plan. Pick the one you enjoy looking at for hundreds of hours.</p></div></div></div>`;
+      <div class="cap" style="margin-bottom:7px">Racial abilities in Forever</div>${r.abilities.map(a => `<div class="row tk-${a.change === 'added' ? 'g' : a.change === 'modified' ? 'a' : 'n'}" style="align-items:flex-start">${RF.img(a.icon, 28)}<div class="grow" style="white-space:normal"><div class="t">${esc(a.name)}${a.change === 'added' ? ' <span class="chip g">New</span>' : a.change === 'modified' ? ' <span class="chip a">Changed</span>' : ''}${cd(a.name)}</div><div class="dim" style="font-size:12px;white-space:pre-wrap">${esc(a.text)}</div></div></div>`).join('')}
+      <p class="mut" style="font-size:11.5px;margin-top:8px">Cooldowns are read from the Forever client. <a class="link" data-race="best">See how the races compare</a>.</p></div>`;
+    return `<div class="split" style="grid-template-columns:268px minmax(0,1fr)"><div class="pane col"><div class="ablist">${head}${list.map(x => `<div class="row click tk-${x.faction === 'Horde' ? 'r' : 'b'} ${r && x.id === r.id ? 'on' : ''}" data-race="${x.id}">${RF.img(x.icon, 28)}<div class="grow"><div class="t">${esc(x.race)}</div><div class="s">${esc((RF.guide.raceWhy[x.race] || {}).best || '')}</div></div></div>`).join('')}</div></div>
+      <div class="pane col">${right}</div></div>`;
   }
   function leveling() {
     return `<div class="pane col" style="margin:0 16px 14px;flex:1;min-height:0"><div class="ab-body"><div class="grid3">${RF.guide.leveling.map(l => `<div class="card"><div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span class="chip ${l.tk}">Level ${l.lv}</span><b style="font-weight:600">${esc(l.title)}</b></div><p class="dim" style="font-size:12.5px;margin-bottom:6px">${esc(l.text)}</p><p class="mut" style="font-size:11.5px">${esc(l.zones)}</p></div>`).join('')}</div>

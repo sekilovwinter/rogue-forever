@@ -1,14 +1,69 @@
 /* Things not asked for directly but needed to play the class well: race choice, professions, leveling, legacy, sourcing. */
 RF.guide.raceWhy = {
-  'Orc': { pve: 'Blood Fury gives 10% Attack Power for 15 seconds, on a short enough cooldown to matter. Hardiness shortens stuns by 20%, which is a strong passive against Kidney Shot and Hammer of Justice.', pvp: 'Hardiness is the standout: every stun on you is 20% shorter. Shatter Curse also removes curses, including a possible Death Mark.', best: 'PvE and PvP all-rounder for the Horde.' },
-  'Undead': { pve: 'Touch of the Grave gives a 20% chance to drain health on hit, a real help when you have no self-healing. Cannibalize saves downtime.', pvp: 'Will of the Forsaken instantly removes Charm, Fear and Sleep. Fear and Mind Control are among your worst enemies, so this is one of the best PvP racials for a rogue.', best: 'The Horde PvP pick.' },
-  'Troll': { pve: 'Berserking adds 10% attack speed for 15 seconds. Regeneration and Rapid Regeneration help between fights: 50% of your health over 6 seconds if you are not hit.', pvp: 'Rapid Regeneration helps you reset after a Vanish. Beast Slaying helps against hunter pets and druids in form.', best: 'Good leveling sustain with useful burst.' },
-  'Skyborne (Windshaper)': { pve: 'Wind Blessed gives a permanent 2% Haste. Skysight gives 15% speed for 15 seconds, and more when charged at a convergence.', pvp: 'Walk on Air lets you glide for 10 seconds, so a cliff becomes an escape. Hard to catch across terrain.', best: 'New race: mobility first.' },
-  'Skyborne (High Order)': { pve: 'Wind Blessed gives a permanent 2% Haste. Read Leyline adds 50% health and mana regeneration for 15 seconds, more if attuned at a ley line, so you spend less time recovering.', pvp: 'Walk on Air gives the same glide escape as other Skyborne.', best: 'New race: mobility and recovery.' },
-  'Human': { pve: 'Ruthless is a permanent 1% crit. The Human Spirit adds 10% Spirit.', pvp: 'Will to Survive instantly removes a stun, a personal PvP trinket. Perception greatly increases stealth detection for 20 seconds, so you see other rogues first.', best: 'The Alliance PvP pick, and strong in PvE.' },
-  'Dwarf': { pve: 'Artisan\'s Precision gives 1% hit, which is worth about 15 Agility until you reach the cap.', pvp: 'Stoneform removes bleeds, poisons and diseases, grants immunity to them, and reduces physical damage by 10% for 8 seconds. Rogue mirrors become much easier.', best: 'Strong against other rogues.' },
-  'Night Elf': { pve: 'Elune\'s Light gives 10% crit for 15 seconds, a major burst cooldown. Quickness gives 1% dodge and 2% speed.', pvp: 'Harder to detect in stealth as if 1 level higher, and Shadowmeld is an extra escape. You open first more often.', best: 'The best stealth race, with real burst too.' },
-  'Gnome': { pve: 'Expansive Mind gives 5% more Energy, and Eureka gives 10% lower Energy costs and 10% more damage for 8 seconds on non-periodic abilities. Large burst value, which is why Gnome tops many early rogue lists.', pvp: 'Escape Artist breaks slows and roots and gives 3 seconds of immunity. Frost Mages and Hunters have a much harder time.', best: 'Highest burst on Alliance, plus a great escape.' },
+  'Undead': { best: 'The best rogue race in Forever.',
+    pve: 'Touch of the Grave: a hit has a 20% chance to steal 5% of your maximum health from the target, at most once every 15 seconds. It is damage and healing at once, and it grows with your Stamina, so it adds about 2 to 4% damage in dungeons, more than any other racial. While leveling, the drain and Cannibalize also cut eating time.',
+    pvp: 'Will of the Forsaken removes Fear, Howl of Terror, Psychic Scream, Intimidating Shout, Mind Control, Seduction and Wyvern Sting, every 2 minutes. Forever has no PvP trinket yet, so it is your only way out of them. It does not remove Blind, Polymorph, Sap, Death Coil or stuns. The drain\'s healing also helps you outlast.' },
+  'Human': { best: 'The best Alliance race, and the answer to stuns.',
+    pve: 'Ruthless is a permanent 1% crit. Crits also feed Seal Fate, so it is worth about 1% damage. The Human Spirit only speeds up health regeneration out of combat.',
+    pvp: 'Will to Survive removes any stun, every 3 minutes: Cheap Shot, Kidney Shot, Hammer of Justice, Intercept, Concussion Blow and Bash. It is the only stun break in Forever until honor vendors open, and stuns come from rogues, warriors, paladins and druids. Perception shows stealthed rogues and druids for 20 seconds, so you open first in a mirror.' },
+  'Gnome': { best: 'The strongest Alliance burst, good for leveling.',
+    pve: 'Eureka! makes Sinister Strike, Backstab, Mutilate, Hemorrhage, Ambush and Eviscerate cost 10% less and hit 10% harder for 8 seconds, every 2 minutes. It does nothing for Rupture, Garrote or poisons. Over a long boss fight that is under 1%, but on a single pull it is a real burst.',
+    pvp: 'Used on your opener, Eureka! adds about 6% damage to the whole fight. Escape Artist removes roots and slows (Frost Nova, Hamstring, Entangling Roots, Concussive Shot) and makes you immune to them for 3 seconds, every 2 minutes. No answer to stuns or fears.' },
+  'Night Elf': { best: 'Burst and stealth, behind Human.',
+    pve: 'Elune\'s Light gives 10% crit for 15 seconds every 3 minutes: about 0.7% damage over a long fight. Quickness adds 1% dodge and 2% movement speed.',
+    pvp: 'Elune\'s Light covers most of a stun chain: about 6% more damage per fight, and more combo points from Seal Fate. Quickness makes you harder to see in stealth, as if you were 1 level higher, and Shadowmeld drops you out of sight for a moment. No crowd control break.' },
+  'Orc': { best: 'Steady in PvP, behind Undead.',
+    pve: 'Blood Fury gives 10% Attack Power for 15 seconds every 2 minutes: about 0.4% damage, because it is up only an eighth of the time and Attack Power is a modest part of each hit next to weapon damage.',
+    pvp: 'Hardiness makes every stun on you 20% shorter, all the time: a 6 second Kidney Shot lasts 4.8. Blood Fury adds about 2% damage per fight, and Shatter Curse removes curses such as Curse of Exhaustion.' },
+  'Troll': { best: 'Best for leveling, weak in PvP.',
+    pve: 'Rapid Regeneration heals half your health over 6 seconds out of combat every 3 minutes, and Beast Slaying adds 5% damage to beasts. Together they tie Undead as the fastest leveler. Berserking (10% attack speed for 15 seconds) only speeds up your white swings, so it adds little in dungeons.',
+    pvp: 'Berserking adds about 2.5% damage per fight. No crowd control break, and Rapid Regeneration stops the moment you are hit.' },
+  'Dwarf': { best: 'Strong against rogues and hunters only.',
+    pve: 'Artisan\'s Precision gives 1% hit: about 1% damage at 40, less at 60, where gear already reaches the 8% hit cap. Big Game Hunter adds 5% damage to beasts while leveling.',
+    pvp: 'Stoneform removes and blocks every poison, bleed and disease for 8 seconds and cuts physical damage by 10%, every 3 minutes. Forever counts Blind and Wyvern Sting as poisons, so Stoneform breaks them. Nothing against stuns or fears.' },
+  'Skyborne (Windshaper)': { best: 'The weakest choice for a rogue.',
+    pve: 'Wind Blessed gives 2% haste, which only speeds up your white swings: under 1% damage. Elemental Insight adds 5% damage to elementals. Skyborne need a Heroic or higher Forever pack.',
+    pvp: 'Walk on Air lets you glide for 10 seconds every 90 seconds, so a cliff becomes an escape. Skysight adds 15% speed for 30 seconds. No crowd control break and no burst.' },
+  'Skyborne (High Order)': { best: 'The weakest choice for a rogue.',
+    pve: 'Wind Blessed gives 2% haste, which only speeds up your white swings: under 1% damage. Read Leyline raises health regeneration by 50% for 15 seconds. Skyborne need a Heroic or higher Forever pack.',
+    pvp: 'Walk on Air lets you glide for 10 seconds every 90 seconds, so a cliff becomes an escape. No crowd control break and no burst.' },
+};
+/* The verdict on the Race tab. Numbers: tools/gear_opt.py with Ctx(..., race=...), every race's best gear set rebuilt at level 60 and
+   averaged over Combat, Assassination and Subtlety (raw/pvp/race_summary.json, made 2026-11-09 from build 1.60.1.70862). */
+RF.guide.raceVerdict = {
+  title: 'The best rogue race in Forever: Undead',
+  lead: 'Undead is first or tied first in dungeons, PvP and leveling, and no other race is in all three. If you play Alliance, take Human.',
+  table: [
+    ['Undead', 'Horde', 2.7, 15.5, 4.6],
+    ['Human', 'Alliance', 0.9, 11.7, 0.9],
+    ['Gnome', 'Alliance', 0.6, 9.0, 3.4],
+    ['Night Elf', 'Alliance', 0.7, 6.3, 2.6],
+    ['Orc', 'Horde', 0.4, 6.3, 1.1],
+    ['Troll', 'Horde', 0.3, 2.4, 4.8],
+    ['Dwarf', 'Alliance', 0.7, 2.2, 2.2],
+    ['Skyborne (High Order)', 'Alliance', 0.8, 0.7, 0.7],
+    ['Skyborne (Windshaper)', 'Horde', 0.8, 0.7, 0.7],
+  ],
+  why: [
+    ['Dungeons', 'Touch of the Grave steals 5% of your maximum health about every 15 to 20 seconds: about 2.7% damage. The next best, Human\'s 1% crit, gives 0.9%.'],
+    ['PvP', 'Forever has no PvP trinket yet, so a racial break is the only one you get, and that puts Undead and Human far ahead. Will of the Forsaken breaks fears, charms and sleeps. Will to Survive breaks stuns. Touch of the Grave\'s healing keeps Undead in front.'],
+    ['Leveling', 'Troll and Undead tie: Rapid Regeneration and Beast Slaying against the drain and Cannibalize. Both save eating time between pulls.'],
+  ],
+  breaks: [
+    ['Stuns', 'Human removes one; Orc makes all of them 20% shorter'],
+    ['Fear, charm, sleep', 'Undead'],
+    ['Blind, poisons, bleeds', 'Dwarf'],
+    ['Roots and slows', 'Gnome'],
+    ['Polymorph, Sap, Gouge, Repentance', 'No race'],
+  ],
+  how: 'Each number is how much stronger the race makes you, as a share of your damage, against the same faction with no racials. Every race got its own best gear set, because +1% hit or crit changes which items win, and the average covers Combat, Assassination and Subtlety at level 60 with this site\'s talent builds. In PvP, health and crowd control count too, turned into damage: you win if you kill first, and breaking a stun or fear takes about 3 of the 20 seconds an enemy gets to hit you. Racial values come from the Forever client, build 1.60.1.70862.',
+  sure: 'Two things no source states: whether white swings can trigger Touch of the Grave, and whether a fear break is worth as much as a stun break. If only abilities trigger it, Undead still lead dungeons by about 2% against 0.9%. Stuns come from more classes than fears (rogues, warriors, paladins and druids, against warlocks, priests and a warrior\'s Shout), so if a fear break counts two thirds of a stun break, Undead and Human tie in PvP. Not in the numbers: stealth detection (Night Elf, Human\'s Perception) and escapes (Shadowmeld, Walk on Air).',
+};
+/* Cooldowns from the Forever client (build 1.60.1.70862), shown beside each racial. */
+RF.guide.racialCd = {
+  'Will to Survive': '3 min', 'Perception': '3 min', 'Stoneform': '3 min', 'Elune\'s Light': '3 min', 'Shadowmeld': '10 sec, 2 min in combat', 'Eureka!': '2 min',
+  'Escape Artist': '2 min', 'Walk on Air': '90 sec', 'Read Leyline': '2 min', 'Skysight': '2 min', 'Blood Fury': '2 min', 'Shatter Curse': '3 min',
+  'Will of the Forsaken': '2 min', 'Cannibalize': '2 min', 'Touch of the Grave': '15 sec between drains', 'Berserking': '3 min', 'Rapid Regeneration': '3 min',
 };
 RF.guide.professions = [
   { name: 'Engineering', icon: 'trade_engineering', tk: 'r', when: 'PvP, first choice', why: 'Grenades give stuns on top of yours, nets stop runners, and Rocket Boots and goggles add options. Because they use no Energy, you have an answer when your cooldowns are gone.' },
