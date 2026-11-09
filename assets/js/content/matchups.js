@@ -1,0 +1,212 @@
+/* Class matchups: facts come from the 70790 spellbooks. Verdict is what the kits imply with equal gear and skill. */
+RF.guide.classes = {
+  warrior: {
+    name: 'Warrior', icon: 'classicon_warrior', color: '#C69B6D', verdict: 'even', label: 'Even, swings on who opens',
+    sum: 'High armor and steady damage, but no way to reach you once you control the distance. If you open on them you are ahead. If they catch you first you are in serious trouble.',
+    threats: [
+      ['Charge', 'From range it stuns for 1 second, but it cannot be used in combat. Opening from stealth takes it away completely.'],
+      ['Intercept', 'From level 30, a 3 second stun at range, in Berserker Stance, usable in combat.'],
+      ['Hamstring and Piercing Howl', '50% slows. They stop you leaving, and stop you circling behind them.'],
+      ['Overpower', 'Becomes usable when you dodge, and cannot be dodged. Your Evasion feeds it.'],
+      ['Disarm', 'Takes your weapon for 10 seconds on a 1 minute cooldown. It stops most of your damage.'],
+      ['Mortal Strike and Execute', 'Enormous hits. A 50% healing reduction matters when you bandage or use potions.'],
+      ['Berserker Rage', 'Immune to Fear and Incapacitate for 10 seconds, so check before you use Sap or Gouge.'],
+    ],
+    yours: [
+      ['Stealth opener', 'Removes Charge from the fight and gives you the first burst of damage.'],
+      ['Bleeds', 'Rupture and Garrote ignore armor, the one stat they rely on most.'],
+      ['Expose Armor', 'Turns plate into paper for 30 seconds, for you and your team.'],
+      ['Vanish', 'Removes Hamstring and resets the fight, which Warriors have the fewest answers to.'],
+      ['Riposte', 'Disarms for 6 seconds, stopping most of their damage.'],
+      ['Crippling Poison', 'A 70% slow means they cannot chase you if you need to break away.'],
+    ],
+    plan: ['Open from stealth, ideally Cheap Shot so they cannot Charge in and build rage.', 'Use all of Cheap Shot, then Kidney Shot at 4 or 5 points. Keep Crippling Poison up.', 'Do not use Evasion early: dodges give them Overpower. Save it for when they have Retaliation up or you are low.', 'If Retaliation lights up, stand behind them or back off for 15 seconds. It cannot counter attacks from behind.', 'If you are losing: Vanish, then walk away or open again.'],
+    avoid: ['Fighting them from the front in the open with no stealth.', 'Spending Eviscerates into Shield Wall.'],
+    items: ['A Free Action Potion stops Hamstring slows and stuns, which is the best single item in this fight.']
+  },
+  paladin: {
+    name: 'Paladin', icon: 'classicon_paladin', color: '#F48CBA', verdict: 'counter', label: 'Hard, they counter you',
+    sum: 'The toughest common matchup. A Paladin has immunity effects, a long stun, poison removal and a full heal. You cannot win by damage alone: you win by outlasting their cooldowns and hitting in the gaps.',
+    threats: [
+      ['Divine Protection and Divine Shield', '8 seconds and 12 seconds of full protection. Divine Shield still lets them attack, at half damage.'],
+      ['Hammer of Justice', 'A 6 second stun from 10 yards, on a 1 minute cooldown. Longest stun you will face.'],
+      ['Lay on Hands', 'A full heal once every 20 minutes. Expect it the first time they get low.'],
+      ['Blessing of Freedom', 'Immunity to slows for 10 seconds, undoing Crippling Poison.'],
+      ['Voice of Truth', 'New in Forever: immune to interrupts for 6 seconds, on a 3 minute cooldown. Do not Kick into it.'],
+      ['Purify and Cleanse', 'Remove your poisons, one at a time.'],
+      ['Repentance', 'A 6 second incapacitate from a Retribution talent. Any damage breaks it.'],
+    ],
+    yours: [
+      ['Kick and Mind-numbing', 'Holy Light and Flash of Light both sit in one school. A locked school means no healing.'],
+      ['Wound Poison', 'Lowers each heal they cast, which makes Lay on Hands the only heal that really matters.'],
+      ['Bleeds', 'Ignore plate and Devotion Aura. Divine Shield clears them, so reapply after.'],
+      ['Stealth patience', 'They have no stealth detection. You always pick the moment, for example straight after they use Divine Shield.'],
+      ['Forbearance', 'Their immunities share a 1 minute lockout (Sacred Duty can shorten it). After one, they cannot use the other. That is your kill window.'],
+    ],
+    plan: ['Open with Cheap Shot, not Ambush. You want control, not a big number into plate.', 'Spend your first stun chain to force a defensive. When it comes, back away, let Energy refill, and let it run out.', 'While they are immune, they can still heal themselves, so reset to a Kick position, not a damage position.', 'After Forbearance is active, use Kidney Shot and all your burst. They have no immunity left for a full minute.', 'Vanish if you get stunned by Hammer of Justice at low health, as soon as you can act.'],
+    avoid: ['Burst into any immunity.', 'Using Kick while Voice of Truth is up.', 'Relying on poison stacks without reapplying after Cleanse.'],
+    items: ['Thorium Grenades or similar engineering stuns work when your stun chain is on cooldown.', 'Free Action Potion stops Hammer of Justice: it is the strongest single answer in this fight.']
+  },
+  hunter: {
+    name: 'Hunter', icon: 'classicon_hunter', color: '#AAD372', verdict: 'favored', label: 'You are favored, if you reach them',
+    sum: 'Strong at range, weak in melee. The whole fight is about whether you arrive. Hunters can spot stealth better than most, but once you are on them they have few tools left.',
+    threats: [
+      ['Track Hidden', 'Boosts stealth detection and shows hidden units on the minimap. A prepared Hunter sees you coming.'],
+      ['Flare', 'Reveals stealth in a 10 yard area for 30 seconds on a 15 second cooldown.'],
+      ['Freezing Trap', 'Stops you for up to 20 seconds. Detect Traps and Disarm Trap are your direct answer.'],
+      ['Concussive Shot and Wing Clip', '50% and 60% slows. Scatter Shot can disorient you for 4 seconds.'],
+      ['Pet', 'Can stay on you and interrupt your chain. Evasion handles pets well.'],
+      ['Deterrence', '25% more dodge and parry for 10 seconds on a 5 minute cooldown. Wait for it to end.'],
+      ['Feign Death', 'Drops combat and targets, but can be resisted. It may also trigger when you are near.'],
+    ],
+    yours: [
+      ['Sprint in stealth', 'Crosses their range faster than they can respond.'],
+      ['Kidney Shot', 'Pins them in melee, where their best damage is not available.'],
+      ['Detect Traps and Disarm Trap', 'Takes away their main plan when you know they are camping.'],
+      ['Crippling Poison', 'A 70% slow on a Hunter ends kiting.'],
+      ['Evasion', 'Pet and melee attacks miss heavily. Ranged shots can also be dodged.'],
+    ],
+    plan: ['Approach from a side, not straight along their line of sight. Traps usually sit between you and them.', 'Open with Cheap Shot or Ambush right at melee range. Do not stop to fight the pet.', 'Stay on the Hunter. When they use Disengage, it is a threat tool, so you stay close.', 'Blind or Gouge the Hunter, not the pet, when you need Energy.', 'If they get away, Sprint first and use Crippling to stay in contact.'],
+    avoid: ['Fighting the pet instead of the Hunter.', 'Running straight in along a line they just walked: that is where the trap is.'],
+    items: ['Gnomish Net-o-Matic and engineering grenades catch a running Hunter.', 'Faster boots help: a Boots enchant for speed is worth a lot here.']
+  },
+  priest: {
+    name: 'Priest', icon: 'classicon_priest', color: '#FFFFFF', verdict: 'favored', label: 'You are favored, but watch Shadow',
+    sum: 'Priests have almost no answer to a stun chain, cannot cure poison, and rely on long casts. Shadow Priests are more dangerous since instant damage keeps coming through your Kicks.',
+    threats: [
+      ['Power Word: Shield', 'Absorbs a big chunk of burst on a 4 second cooldown, and stops damage interrupting their casts.'],
+      ['Psychic Scream', 'Up to 5 targets flee within 8 yards for 8 seconds. Their main escape, on a 30 second cooldown.'],
+      ['Confounding Flash', 'New: 0.5 second cast, confuses up to 5 enemies within 8 yards for 3 seconds. Any damage breaks it.'],
+      ['Chastise', 'New: immobilizes a humanoid for 2 seconds, with damage.'],
+      ['Silence, Mind Flay, Shadowguard', 'A Shadow Priest slows, silences and reflects damage.'],
+      ['Mind Control', 'Up to 1 minute, near a cliff or group it can be deadly.'],
+      ['Dispel Magic', 'Can remove some buffs, including yours.'],
+    ],
+    yours: [
+      ['Kick on the heal', 'Greater Heal takes 3 seconds, a Holy lockout stops it for 5.'],
+      ['Mind-numbing Poison', 'Makes every cast even slower, and they have no way to cure it.'],
+      ['Wound Poison', 'Renew and small heals nearly vanish, and they have no cure.'],
+      ['Kidney Shot', 'A long window to burn through the shield.'],
+      ['Stoic stealth', 'Sap removes the fight entirely until you choose.'],
+    ],
+    plan: ['Open with Cheap Shot, not Ambush, if a shield is already up.', 'Build during the stun, then pop the shield with a few strikes before you use Eviscerate.', 'Keep 25 Energy for Kick. Save Kick for a long cast, like Greater Heal.', 'Psychic Scream will come when they are low: stand behind them to get into range faster when it ends.', 'Keep your Blind in reserve so you can stop them bandaging or running.'],
+    avoid: ['Wasting Eviscerate into a fresh shield.', 'Standing beside a Priest with friends: Mind Control near a drop or enemy guards is a real risk.'],
+    items: ['A PvP trinket or Will of the Forsaken removes Psychic Scream, turning their one escape into nothing.']
+  },
+  shaman: {
+    name: 'Shaman', icon: 'classicon_shaman', color: '#0070DD', verdict: 'even', label: 'Even, depends on totems',
+    sum: 'Shamans have instant interrupts, heals, slows and poison cleansing. They are more durable than a caster should be, but nothing stops a good stun chain, and every totem has only 5 health.',
+    threats: [
+      ['Earth Shock', 'Instant interrupt on a short cooldown. It does not affect you unless you are casting, like a bandage or a potion. Also strong damage.'],
+      ['Frost Shock', 'A 50% slow for 8 seconds that makes it hard to stick to them.'],
+      ['Earthbind Totem', 'Area slow, 5 health. Kill it with one hit.'],
+      ['Grounding Totem', 'Takes one harmful spell for them. Not a big issue for you, as poisons are not spells.'],
+      ['Poison Cleansing Totem and Cure Poison', 'Removes your poisons regularly.'],
+      ['Stormstrike and Windfury', 'Enhancement burst can hit very hard.'],
+      ['Healing Wave and Nature\'s Swiftness', 'Strong heals and one instant one.'],
+    ],
+    yours: [
+      ['Kick', 'Healing Wave and Lightning Bolt share Nature school. One Kick stops both.'],
+      ['Kidney Shot', 'Stops everything at once: heals, shocks and totem drops.'],
+      ['Sprint', 'Gets you out of Earthbind\'s range.'],
+      ['Totem kills', 'Each totem is 5 health. One swing frees you from each problem. Blade Flurry cleaves them.'],
+    ],
+    plan: ['Open with Cheap Shot, so they cannot drop totems first.', 'Kill the Earthbind or Poison Cleansing Totem at once if it matters.', 'Save Kick for Healing Wave. Keep Wound and Crippling Poisons up.', 'When they try to heal, Kick. When they try to run in Ghost Wolf, use Crippling.', 'If they are about to use Nature\'s Swiftness, that is an instant heal: burn them just after it.'],
+    avoid: ['Letting a totem wall build up while you chase them.', 'Trying to bandage: Earth Shock will end it.'],
+    items: ['Thorium Grenade or an engineering stun gives another layer when Kidney is on cooldown.']
+  },
+  mage: {
+    name: 'Mage', icon: 'classicon_mage', color: '#3FC7EB', verdict: 'favored', label: 'You are favored from stealth',
+    sum: 'If you open on a Mage, you usually win. If a Frost Mage opens on you with distance, you often lose. Forever adds Blink stun-break, Ice Lance and Frostbite, so timing the Blink is the core of this fight.',
+    threats: [
+      ['Frost Nova', 'Freezes you for up to 8 seconds on a 25 second cooldown. Any damage can break it.'],
+      ['Blink', 'Teleports 20 yards and frees from stuns and roots in Forever. On a 15 second cooldown. Bait it.'],
+      ['Polymorph', 'A 1.5 second cast. Kick it, and you lock Arcane. Any damage breaks it, and it heals you.'],
+      ['Ice Lance and Shatter', 'Massive damage while you are frozen. Frostbite can freeze you randomly.'],
+      ['Ice Block', '10 seconds immune, and they cannot act during it. They can remove your stuns with it.'],
+      ['Counterspell', 'Not a problem unless you are bandaging with something that casts.'],
+      ['Mana Shield and Ice Barrier', 'Absorb physical damage directly.'],
+    ],
+    yours: [
+      ['Stealth', 'Their range is worthless if they do not see you first.'],
+      ['Cheap Shot then Kidney', 'Bait the Blink early with the first stun, so the long Kidney comes after.'],
+      ['Kick', 'A Frost lockout stops Frostbolt and Ice Lance.'],
+      ['Mind-numbing Poison', 'Polymorph at 1.5 seconds becomes nearly 2.5 seconds, so it is much easier to interrupt.'],
+      ['Improved Sprint', 'Clears a Frost Nova when you press it.'],
+      ['Blind', 'Their Ice Block is the only clean answer.'],
+    ],
+    plan: ['Sap first if they are with others. Otherwise Cheap Shot.', 'Use your Energy into attacks: they will Blink out soon, and you want a full Energy bar after they do.', 'After the Blink, Sprint if you need to, Kick the next cast, and use Kidney when you catch them.', 'If Ice Block comes, stop attacking and step back, ready to Kick when they come out, since they will usually try to cast at once.', 'If you get caught in a Frost Nova: with Improved Sprint, use it. Without, wait for it to end and then Sprint.'],
+    avoid: ['Using Sprint while frozen without Improved Sprint.', 'Sapping and letting them drink to full: they get mana back fast.'],
+    items: ['A PvP trinket or Escape Artist on a Gnome clears Frost Nova.', 'Fire Resistance or Frost Resistance gear can be a good swap in a dedicated duel, but do not give up damage for it.']
+  },
+  warlock: {
+    name: 'Warlock', icon: 'classicon_warlock', color: '#8788EE', verdict: 'even', label: 'Even, DoTs fight your stealth',
+    sum: 'Warlocks can make you pay for each second you are not touching them. DoTs stop you from going back to stealth, Fear stops you from acting, and pets get in the way. But they are cloth, with no way to escape a stun chain.',
+    threats: [
+      ['Fear', 'Up to 20 seconds, but it can break on damage. It takes 1.5 seconds, so you can Kick it.'],
+      ['Howl of Terror and Death Coil', 'Area fear and a 3 second horror with a heal.'],
+      ['Corruption and Banes', 'Knock you out of stealth and stop Vanish from working well.'],
+      ['Felhunter', 'Devour Magic removes buffs, and the pet can Spell Lock. Paranoia raises their detection.'],
+      ['Voidwalker Sacrifice', 'A shield absorbs a big burst.'],
+      ['Succubus', 'Seduction works like a long Fear.'],
+      ['Curse of Exhaustion', 'A 30% slow, instant and from range.'],
+    ],
+    yours: [
+      ['Stealth opener', 'Catch them when the pet is far away or they have not started any DoTs.'],
+      ['Kick', 'Shadow Bolt and Fear are both Shadow. One Kick locks both.'],
+      ['Kidney Shot', 'Stops Drain Life and Fear casts, and gives you time to burn them down.'],
+      ['Will of the Forsaken', 'If you are Undead, this removes Fear and gives you a huge edge.'],
+      ['Mind-numbing Poison', 'Slows Fear and Shadow Bolt. They cannot cure it.'],
+    ],
+    plan: ['Open, then stay on the Warlock. Ignore the pet.', 'Save Kick for Fear. If you Kick it, Shadow Bolt is locked out too.', 'Use Kidney Shot once you have enough points, then use all your damage.', 'Avoid using Vanish when several DoTs are on you. Only do it after they are close to ending.', 'If you are Feared, take the damage. They will often hit you with a DoT that breaks the Fear.'],
+    avoid: ['Killing the pet first while their DoTs kill you.', 'Trying to reset with Vanish while covered in curses.'],
+    items: ['A PvP trinket or Will of the Forsaken removes Fear.', 'Shadow Resistance gear reduces DoTs, but it is usually not worth losing damage.']
+  },
+  druid: {
+    name: 'Druid', icon: 'classicon_druid', color: '#FF7C0A', verdict: 'counter', label: 'Hard, they can leave and come back',
+    sum: 'A good Druid is slippery. Shifting form frees them from slows, they can heal between attacks, and Prowl means they can also open on you. You win when you stun them while they are not in the form they want.',
+    threats: [
+      ['Shapeshifting', 'Any shift frees them from slows, and in Forever Bear, Cat and Travel forms protect from Polymorph-like effects. Crippling Poison does little.'],
+      ['Faerie Fire', 'Stops you from using Stealth for 40 seconds.'],
+      ['Entangling Roots', 'A 1.5 second cast. Kick it to lock Nature school.'],
+      ['Bash', 'A 4 second stun in Bear Form.'],
+      ['Feral Charge', 'Bear: immobilizes and interrupts. Cat: leaps behind you.'],
+      ['Prowl', 'A feral Druid can also open on you with Ravage or Pounce. You may not be the only hunter here.'],
+      ['Cure Poison and Abolish Poison', 'Your poisons do not last.'],
+      ['Barkskin, Rejuvenation', 'Damage reduction, and heals that are instant, so they can\'t be kicked.'],
+    ],
+    yours: [
+      ['Kick', 'Healing Touch, Regrowth and Roots are all Nature. One Kick locks them all.'],
+      ['Kidney Shot', 'Stops shapeshifting. A stun is the only thing that stops them from healing.'],
+      ['Bleeds', 'Ignore bear armor.'],
+      ['Expose Armor', 'Bears depend on armor more than any other class.'],
+      ['Mind-numbing Poison', 'Makes Roots and big heals slower, if you can keep it on.'],
+    ],
+    plan: ['Try to catch them out of form, or when they are at low mana.', 'Stun, then burn. Do not Kick early: Kick the first long heal after your stun ends.', 'When they shift to Bear, stop dumping finishers, and use Rupture or wait.', 'If they leave in Travel Form and come back, stay stealthed and let them come to you. Use Sap only if they are in humanoid form.', 'Keep Vanish ready for when Roots and damage line up on you.'],
+    avoid: ['Relying on Crippling Poison.', 'Chasing a Travel Form Druid across a field.'],
+    items: ['Engineering nets and grenades are strong against Druids who rely on movement.', 'Mana-draining effects are not available to you, so bursting their health while they have mana is your only plan.']
+  },
+  rogue: {
+    name: 'Rogue', icon: 'classicon_rogue', color: '#FFF468', verdict: 'mirror', label: 'Mirror: first to act wins',
+    sum: 'The same tools on both sides. So it comes down to who spots whom first, whose cooldowns last, and who plays Energy better. Subtlety tends to win long mirrors through Preparation, Assassination wins fast ones through burst.',
+    threats: [
+      ['Sap', 'If they see you first, you stand still until they are ready.'],
+      ['Cheap Shot and Kidney Shot', 'Your own chain against you.'],
+      ['Blind', 'Stops your attacks. Being Undead or having a PvP trinket gives you an edge here.'],
+      ['Evasion', 'Your builders will be dodged. Consider stopping to wait it out.'],
+      ['Vanish', 'They come back with another opener.'],
+      ['Riposte', 'Disarms you for 6 seconds.'],
+    ],
+    yours: [
+      ['Detection', 'Master of Deception, Night Elf racial, and Heightened Senses decide who sees whom first.'],
+      ['Energy planning', 'Whoever has more Energy when the stun ends usually wins.'],
+      ['Kidney Shot', 'Stops them using Vanish.'],
+      ['Bleeds', 'Bleeds tick through Evasion, and keep them out of stealth.'],
+      ['Preparation', 'Whoever has the last cooldowns wins.'],
+    ],
+    plan: ['Walk slowly and turn your camera. See them first.', 'If you find them, Sap, then let Energy fill, and open with Cheap Shot.', 'Use Blind at the moment they try to open, or to stop their burst.', 'Keep Rupture up so they cannot use stealth. Their Vanish will fail if a DoT ticks.', 'Count their cooldowns: Vanish, Evasion, Blind, Sprint. Do not commit your last until they are gone.'],
+    avoid: ['Pressing builders into Evasion.', 'Spending your Energy just before a stun ends.'],
+    items: ['A PvP trinket is the most important mirror item: it breaks Kidney Shot or Blind.', 'A Flash Bomb or similar grenade gives another stun when yours are on cooldown.']
+  }
+};
+RF.guide.classOrder = ['warrior', 'paladin', 'hunter', 'priest', 'shaman', 'mage', 'warlock', 'druid', 'rogue'];

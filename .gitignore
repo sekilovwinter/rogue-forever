@@ -1,0 +1,6 @@
+# The repository holds the site only. These stay on the PC that builds it.
+raw/
+tools/
+notes/
+serve.mjs
+Start Rogue Forever.bat

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rogue Forever</title>
+<link rel="icon" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/lib/leaflet.css">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<div id="bg"></div>
+<div id="app">
+  <header id="bar">
+    <a class="brand" href="#/home">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path fill="#ff4655" d="M2 2h16l-3.6 5H5.6zM5.2 9h9.6L10 18z"/></svg>
+      ROGUE FOREVER
+    </a>
+    <div id="crumb"></div>
+    <div class="sp"></div>
+    <button class="searchbtn" data-act="search"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="m11 11 4 4"/></svg>Search everything<kbd>Ctrl K</kbd></button>
+    <div class="pill" data-act="profile" id="profilePill"></div>
+  </header>
+  <div id="body">
+    <nav id="rail"></nav>
+    <main id="view"></main>
+  </div>
+</div>
+<div id="tip"></div>
+<div id="modal"></div>
+<script src="assets/lib/leaflet.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/content/abilities.js"></script>
+<script src="assets/js/content/abilities2.js"></script>
+<script src="assets/js/content/abilities3.js"></script>
+<script src="assets/js/content/matchups.js"></script>
+<script src="assets/js/content/macro.js"></script>
+<script src="assets/js/content/gear.js"></script>
+<script src="assets/js/content/talents.js"></script>
+<script src="assets/js/content/codex.js"></script>
+<script src="assets/js/content/exits.js"></script>
+<script src="assets/js/content/leatherworking.js"></script>
+<script src="assets/js/pages/home.js"></script>
+<script src="assets/js/pages/abilities.js"></script>
+<script src="assets/js/pages/talents.js"></script>
+<script src="assets/js/pages/macro.js"></script>
+<script src="assets/js/pages/matchups.js"></script>
+<script src="assets/js/pages/gear.js"></script>
+<script src="assets/js/pages/map.js"></script>
+<script src="assets/js/pages/dungeons.js"></script>
+<script src="assets/js/pages/leatherworking.js"></script>
+<script src="assets/js/pages/codex.js"></script>
+<script>RF.start();</script>
+</body>
+</html>
