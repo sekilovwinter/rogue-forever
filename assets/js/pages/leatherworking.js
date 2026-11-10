@@ -74,7 +74,7 @@
 
   /* ---------- Reusable pieces of a step ---------- */
   function person(role, p, zone, note) {
-    return `<div class="lwperson"><div class="grow"><div class="t">${esc(p.n)}${p.seen ? ' <span class="chip g" data-tip="Seen in Forever">Seen</span>' : ''}</div><div class="s">${esc(role)}. ${esc(zone)} ${p.x}, ${p.y}${note ? `. ${esc(note)}` : ''}</div></div>${mapBtn(p.ll, p.n)}</div>`;
+    return `<div class="lwperson"><div class="grow"><div class="t">${esc(p.n)}${p.seen ? ' <span class="chip g" data-tip="Players have reported this NPC here in Forever">Seen</span>' : p.seen === 0 ? ' <span class="chip a" data-tip="From Classic data. Nobody has reported this NPC in Forever yet, so the spot or what they offer may have changed.">Classic data</span>' : ''}</div><div class="s">${esc(role)}. ${esc(zone)} ${p.x}, ${p.y}${note ? `. ${esc(note)}` : ''}</div></div>${mapBtn(p.ll, p.n)}</div>`;
   }
   function bagRow(id, count, note) {
     const c = city();
@@ -435,7 +435,7 @@
       learn: learnIt(210) + learnRow('Nightscape Boots', r(230).cost, r(230).make),
     }));
     const P3a = 'Skill 225 to 235', P3b = 'Skill 235 to 300';
-    const where2 = who => (who === P.werg ? `at The Bulwark, on the Tirisfal Glades border (${who.z} ${who.x}, ${who.y})` : who === P.porter ? `at Chillwind Camp (${who.z} ${who.x}, ${who.y})` : who === P.qia ? `in Everlook (${who.z} ${who.x}, ${who.y})` : `in ${who.z}, at ${who.x}, ${who.y}`);
+    const where2 = who => (who === P.werg ? `at The Bulwark, the Horde camp on the road from Tirisfal Glades into the Western Plaguelands (${who.z} ${who.x}, ${who.y})` : who === P.porter ? `at Chillwind Camp (${who.z} ${who.x}, ${who.y})` : who === P.qia ? `in Everlook (${who.z} ${who.x}, ${who.y})` : `in ${who.z}, at ${who.x}, ${who.y}`);
     S.push(craft('p3', P3a, 225, {
       do: ['Keep crafting Nightscape Pants until your skill reaches 230.', sellLine(r(225))],
       why: `The Artisan rank you already have lets you go past 225, so there is no trip here. Skipping Rugged Armor Kit saves another visit to ${hah.n}.`,

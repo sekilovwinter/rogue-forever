@@ -5,23 +5,36 @@
   const MILES = [10, 20, 30, 40, 50, 60];
   const EV = { seen: ['g', 'Seen in Forever'], client: ['b', 'In Forever client'], classic: ['a', 'Classic data'] };
   const SPEC = { combat: 'Combat', assassination: 'Assassination', subtlety: 'Subtlety' };
-  let st = { tab: 'list', spec: null, mode: 'pve', lv: 60, pslot: 'mh' };
-  let PL = null, side = 'h';
+  let st = { tab: 'list', spec: null, mode: 'pve', lv: 60, pslot: 'mh', eslot: 'mh' };
+  let PL = null, EN = null, LW = null, side = 'h';
   const evOf = k => EV[k] || EV.classic;
   const sideOf = () => RF.prefs.faction === 'Alliance' ? 'a' : 'h';
   const sideName = s => s === 'a' ? 'Alliance' : 'Horde';
   const ctx = () => PL.ctx[`${st.spec}/${st.mode}/${st.lv}`];
   const pit = id => { const a = PL.items[String(id)]; if (a) RF.regItem(a); return a; };
+  const RACES = { h: [['orc', 'Orc'], ['undead', 'Undead'], ['troll', 'Troll'], ['windshaper', 'Skyborne']], a: [['human', 'Human'], ['dwarf', 'Dwarf'], ['nightelf', 'Night Elf'], ['gnome', 'Gnome'], ['highorder', 'Skyborne']] };
+  const raceOf = () => RACES[side].find(r => r[0] === RF.prefs.race) || null;
+  /* the slot as shown: where the chosen race's racials make another item better, that item replaces the shared pick */
+  function eff(s) {
+    const P = ctx(), rc = raceOf(), R = rc && P.race && P.race[rc[0]], o = R && R.slots[s.slot];
+    if (!o) return s;
+    const was = s.i && pit(s.i), n = RF.guide.planNotes;
+    return { slot: s.slot, label: s.label, i: o.i, alts: [], close: [], raced: rc[1],
+      why: `Picked for ${rc[1]}. ${n.race[rc[0]]} ${was ? `For other races this slot is ${was.n}.` : 'For other races nothing here is worth getting.'} ${o.why || ''}`,
+      rnote: `The whole set was built again with the ${rc[1]} racials switched on. It came out ${R.gain.toFixed(1)}% stronger than the shared set, and this slot is one of the pieces that changed.` };
+  }
 
   function planRow(s) {
+    s = eff(s);
     const a = s.i && pit(s.i);
     const on = st.pslot === s.slot;
     if (!a) return `<div class="row slotrow tk-n ${on ? 'on' : ''} click" data-pslot="${s.slot}"><span class="ic ic28" style="display:block;background:#222"></span><div class="grow"><div class="s">${esc(s.label)}</div><div class="t mut">Nothing obtainable yet</div></div></div>`;
-    const close = s.judged ? ' <span class="chip v" style="height:15px;font-size:9px">hand-picked</span>' : s.close && s.close.length ? ' <span class="chip a" style="height:15px;font-size:9px">close call</span>' : '';
+    const close = s.raced ? ` <span class="chip b" style="height:15px;font-size:9px">${esc(s.raced)}</span>` : s.judged ? ' <span class="chip v" style="height:15px;font-size:9px">hand-picked</span>' : s.close && s.close.length ? ' <span class="chip a" style="height:15px;font-size:9px">close call</span>' : '';
     return `<div class="row click ${on ? 'on' : ''} tk-${evOf(a.tag)[0]}" data-pslot="${s.slot}" data-itemref="${a.i}">${RF.img(a.ic, 28, a.q >= 2 ? 'bq' + a.q : '')}<div class="grow"><div class="s">${esc(s.label)}${close}</div><div class="t q${a.q ?? 1}">${esc(a.n)}</div></div></div>`;
   }
   const planWhere = b => { const o = (b.src || [])[0]; return o ? `${o.k}: ${o.t}` : 'Source unknown'; };
   function planCard(s) {
+    s = eff(s);
     const a = s.i && pit(s.i);
     if (!a) return '<div class="note">No item for this slot can be obtained at this level yet.</div>';
     const tg = evOf(a.tag), unit = RF.guide.planNotes.unit[st.mode];
@@ -38,7 +51,7 @@
       <div class="cap" style="margin:4px 0 5px">How to get it</div><div style="margin-bottom:10px">${src}</div>
       ${(a.cav || []).length ? `<div class="note"><b>Check first:</b> ${a.cav.map(esc).join(' ')}</div>` : ''}
       <div class="why"><b>Why this one</b>${esc(s.why || '')}</div>
-      <details class="fold"><summary>How this was checked</summary><div class="in"><p class="dim" style="font-size:12px;margin-bottom:6px">Every item a ${sideName(side)} Rogue can get by this level was tried in this slot with the rest of the set unchanged. These came closest. The number is how much weaker the whole set is with that item instead, as a share of your ${unit}${s.judged ? '; a plus means stronger' : ''}.</p>${alts || '<p class="mut">No other item comes close.</p>'}${close}</div></details>`;
+      <details class="fold"><summary>How this was checked</summary><div class="in"><p class="dim" style="font-size:12px;margin-bottom:6px">Every item a ${sideName(side)} Rogue can get by this level was tried in this slot with the rest of the set unchanged. These came closest. The number is how much weaker the whole set is with that item instead, as a share of your ${unit}${s.judged ? '; a plus means stronger' : ''}.</p>${s.rnote ? `<p class="dim" style="font-size:12px">${esc(s.rnote)}</p>` : alts || '<p class="mut">No other item comes close.</p>'}${close}</div></details>`;
   }
   function chips(P) {
     const S = P.stats, m = st.mode;
@@ -90,6 +103,72 @@
         <details class="fold" style="margin-top:9px"><summary>What the model assumes</summary><div class="in">${n.how(st.mode, sideName(side)).map(t => `<p class="dim" style="font-size:12px;margin-bottom:6px">${esc(t)}</p>`).join('')}</div></details>
       </div></div></div>`;
   }
+  /* Where to get it: this set's picks grouped by where they come from, each with how to get it. */
+  const ROUTE_ORDER = ['Auction house', 'Vendor', 'Reputation', 'Crafted', 'Quests', 'Dungeon', 'Named mobs', 'Chests', 'Other'];
+  function routeView() {
+    const P = ctx(), n = RF.guide.routeNotes;
+    if (!P) return `<div class="note" style="margin:0 16px">No plan for this level yet.</div>`;
+    const groups = new Map();
+    let none = 0;
+    P.slots.map(eff).forEach(s => {
+      const a = s.i && pit(s.i);
+      if (!a) { none++; return; }
+      const o = (a.src || [])[0] || { k: 'Other', t: 'Source unknown', g: 'Other', d: [] };
+      const g = o.g || o.k;
+      if (!groups.has(g)) groups.set(g, []);
+      groups.get(g).push({ s, a, o });
+    });
+    const rank = g => { const i = ROUTE_ORDER.findIndex(x => g.startsWith(x)); return i < 0 ? 99 : i; };
+    const keys = [...groups.keys()].sort((x, y) => rank(x) - rank(y) || groups.get(y).length - groups.get(x).length || x.localeCompare(y));
+    const item = ({ s, a, o }) => {
+      const lines = (o.d && o.d.length ? o.d : [o.t]).map(esc).join(' ');
+      return `<div class="loot" data-itemref="${a.i}" style="align-items:flex-start;cursor:default;padding:7px 4px">${RF.img(a.ic, 28, a.q >= 2 ? 'bq' + a.q : '')}<div style="flex:1;min-width:0">
+        <div><span class="mut" style="font-size:11px">${esc(s.label)}</span> <b class="q${a.q ?? 1}" style="font-weight:600">${esc(a.n)}</b> <span class="chip ${evOf(o.ev)[0]}" style="height:15px;font-size:9px">${esc(evOf(o.ev)[1])}</span>${s.judged ? ' <span class="chip v" style="height:15px;font-size:9px">hand-picked</span>' : ''}</div>
+        <div class="dim" style="font-size:12.5px;line-height:1.5;margin-top:2px">${lines}</div>
+        ${(a.cav || []).length ? `<div style="font-size:12px;line-height:1.45;margin-top:3px;color:#e9c46a"><b>Check first:</b> ${a.cav.map(esc).join(' ')}</div>` : ''}</div></div>`;
+    };
+    const lw = ((LW && LW[side] && LW[side][`${st.spec}/${st.mode}/${st.lv}`]) || []);
+    const lwRow = r => `<div class="loot" style="align-items:flex-start;cursor:default;padding:7px 4px">${RF.img(r.ic, 28, r.q >= 2 ? 'bq' + r.q : '')}<div style="flex:1;min-width:0">
+        <div><span class="mut" style="font-size:11px">${esc(r.label)}</span> <b class="q${r.q ?? 1}" style="font-weight:600">${esc(r.n)}</b> ${r.pick ? '<span class="chip g" style="height:15px;font-size:9px">the pick</span>' : `<span class="chip" style="height:15px;font-size:9px">${r.behind.toFixed(1)}% behind ${esc(r.over || '')}</span>`}</div>
+        <div class="dim" style="font-size:12.5px;line-height:1.5;margin-top:2px">${(r.d || []).map(esc).join(' ')}</div></div></div>`;
+    return `<div class="pane col" style="margin:0 16px 14px;flex:1;min-height:0"><div class="abhead" style="padding:11px 14px;display:block"><div class="cap" style="color:#ff8d96">${esc(n.title(st.lv, sideName(side), SPEC[st.spec], st.mode))}</div>
+        <div class="dim" style="font-size:12.5px;margin-top:3px;max-width:980px">${esc(n.lead)}</div></div>
+      <div class="ab-body" style="padding:11px 14px"><div class="grid2" style="gap:12px;align-items:start">
+        ${keys.map(g => `<div class="card" style="padding:10px 12px"><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px"><h3 style="margin:0">${esc(g)}</h3><span class="mut" style="font-size:11px">${groups.get(g).length} piece${groups.get(g).length === 1 ? '' : 's'}</span></div>${g === 'Auction house' ? `<p class="dim" style="font-size:12px;margin-bottom:4px">${esc(n.ah)}</p>` : ''}${groups.get(g).map(item).join('')}</div>`).join('')}
+        ${lw.length ? `<div class="card" style="padding:10px 12px"><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px"><h3 style="margin:0">If you have Leatherworking</h3><span class="mut" style="font-size:11px">${lw.length} craft${lw.length === 1 ? '' : 's'}</span></div><p class="dim" style="font-size:12px;margin-bottom:4px">${esc(n.lw)} <a class="link" href="#/codex/leatherworking">Leatherworking path</a></p>${lw.map(lwRow).join('')}</div>` : ''}
+      </div>${none ? `<p class="mut" style="font-size:12px;margin-top:10px">${none} slot${none === 1 ? ' has' : 's have'} nothing worth getting at this level.</p>` : ''}
+      <details class="fold" style="margin-top:10px"><summary>Where these facts come from</summary><div class="in">${n.how.map(t => `<p class="dim" style="font-size:12px;margin-bottom:6px">${esc(t)}</p>`).join('')}</div></details></div></div>`;
+  }
+  function enchRow(s) {
+    const on = st.eslot === s.slot, c = s.pick;
+    return `<div class="row click ${on ? 'on' : ''} tk-${evOf(c.ev)[0]}" data-eslot="${s.slot}">${RF.img(c.ic, 28)}<div class="grow"><div class="s">${esc(s.label)}${c.gain == null ? ' <span class="chip v" style="height:15px;font-size:9px">hand-picked</span>' : ''}</div><div class="t">${esc(c.n.split(' - ')[1])}</div></div></div>`;
+  }
+  function enchCard(s) {
+    const c = s.pick, n = RF.guide.enchNotes, unit = RF.guide.planNotes.unit[st.mode];
+    const mats = (c.mats || []).map(m => `${m[1]} ${esc(m[0])}`).join(', ');
+    const alts = (s.alts || []).map(a => `<div class="loot" style="align-items:flex-start;cursor:default">${RF.img(a.ic, 24)}<div style="flex:1;min-width:0"><div>${esc(a.n)}</div><div class="mut" style="font-size:11.5px">${esc(a.fx || '')}</div><div class="dim" style="font-size:11.5px">${esc(a.src)}; enchanter skill ${a.skill || 1}</div></div><span class="pct" title="How much this enchant adds to the whole set, as a share of your ${unit}">+${a.gain.toFixed(1)}%</span></div>`).join('');
+    return `<div class="card" style="padding:11px 13px;margin-bottom:9px"><div style="display:flex;align-items:center;gap:10px">${RF.img(c.ic, 40)}<div style="min-width:0;flex:1"><div style="font-weight:600;font-size:15px">${esc(c.n)}</div><div class="mut" style="font-size:11px">On ${esc(s.on)}${c.gain != null ? ` · adds ${c.gain.toFixed(1)}% ${unit}` : ''}</div></div><span class="chip ${evOf(c.ev)[0]}">${evOf(c.ev)[1]}</span></div>
+        <div style="margin:8px 0 2px;padding:7px 10px;background:#141417;border-radius:6px"><div style="font-size:12px;color:#6fe9c6">${esc(c.fx || '')}</div></div></div>
+      <div class="cap" style="margin:4px 0 5px">How to get it</div>
+      <div class="dim" style="font-size:12.5px;margin-bottom:4px"><b style="font-weight:600;color:var(--txt)">Who:</b> an enchanter with Enchanting skill ${c.skill || 1} who knows it. ${esc(c.src)}.</div>
+      <div class="dim" style="font-size:12.5px;margin-bottom:10px"><b style="font-weight:600;color:var(--txt)">Materials to bring:</b> ${mats || 'not listed'}.</div>
+      ${c.cav ? `<div class="note"><b>Check first:</b> ${esc(c.cav)}</div>` : ''}
+      <div class="why"><b>Why this one</b>${esc(s.why || '')}</div>
+      <details class="fold"><summary>How this was checked</summary><div class="in"><p class="dim" style="font-size:12px;margin-bottom:6px">${esc(n.checked)}</p>${alts || '<p class="mut">No other enchant for this slot adds anything for a Rogue.</p>'}</div></details>`;
+  }
+  function enchView() {
+    const S = EN && EN[`${st.spec}/${st.mode}/${st.lv}`], n = RF.guide.enchNotes;
+    if (!S || !S.length) return `<div class="note" style="margin:0 16px">No enchants for this set yet.</div>`;
+    if (!S.some(s => s.slot === st.eslot)) st.eslot = S[0].slot;
+    const cur = S.find(s => s.slot === st.eslot);
+    return `<div style="display:grid;grid-template-columns:320px minmax(0,1fr);gap:12px;flex:1;min-height:0;padding:0 16px 14px">
+      <div class="pane col"><div class="scroll" style="padding:8px;flex:1">${S.map(enchRow).join('')}</div></div>
+      <div class="pane col"><div class="abhead" style="padding:11px 14px;display:block"><div class="cap" style="color:#ff8d96">${esc(n.title(st.lv, sideName(side), SPEC[st.spec], st.mode))}</div>
+          <div class="dim" style="font-size:12.5px;margin-top:3px;max-width:900px">${esc(n.lead)}</div></div>
+        <div class="ab-body" style="padding:11px 14px"><div class="cap" style="margin-bottom:6px">${esc(cur.label)}</div>${enchCard(cur)}
+          <details class="fold" style="margin-top:10px"><summary>How the enchants were chosen</summary><div class="in">${n.how.map(t => `<p class="dim" style="font-size:12px;margin-bottom:6px">${esc(t)}</p>`).join('')}</div></details>
+        </div></div></div>`;
+  }
   function counterView() {
     return `<div class="pane col" style="margin:0 16px 14px;flex:1;min-height:0"><div class="ab-body"><div class="grid2" style="gap:12px">${RF.guide.itemCounters.map(g => `<div class="card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${RF.img(g.icon, 24)}<h3 style="margin:0">${esc(g.title)}</h3></div>${g.rows.map(r => `<div class="row tk-${g.tk}" style="align-items:flex-start"><div class="grow" style="white-space:normal"><div class="t" style="white-space:normal">${esc(r[0])}</div><div class="dim" style="font-size:12px;line-height:1.45">${esc(r[1])}</div></div></div>`).join('')}</div>`).join('')}
       <div class="card"><h3>What to carry</h3>${RF.guide.consumables.map(c => `<div class="row tk-g" style="align-items:flex-start"><div class="grow" style="white-space:normal"><div class="t">${esc(c[0])}</div><div class="dim" style="font-size:12px">${esc(c[1])}</div></div></div>`).join('')}</div></div></div></div>`;
@@ -97,15 +176,20 @@
   async function ensurePlan() {
     side = sideOf();
     PL = await RF.load('gearplan_' + side);
+    EN = await RF.load('enchantplan_' + side).catch(() => null);
+    LW = await RF.load('lwcheck').catch(() => null);
   }
   function draw(view) {
     const b = view.querySelector('#gbody');
-    b.innerHTML = st.tab === 'list' ? planView() : st.tab === 'stats' ? statsView() : counterView();
+    b.innerHTML = st.tab === 'list' ? planView() : st.tab === 'route' ? routeView() : st.tab === 'ench' ? enchView() : st.tab === 'stats' ? statsView() : counterView();
     view.querySelectorAll('#gtabs button').forEach(x => x.classList.toggle('on', x.dataset.v === st.tab));
     view.querySelectorAll('#gspec button').forEach(x => x.classList.toggle('on', x.dataset.v === st.spec));
     view.querySelectorAll('#gmode button').forEach(x => x.classList.toggle('on', x.dataset.v === st.mode));
     view.querySelectorAll('#gmile button').forEach(x => x.classList.toggle('on', +x.dataset.v === st.lv));
     view.querySelectorAll('#gside button').forEach(x => x.classList.toggle('on', x.dataset.v === sideName(side)));
+    const rc = raceOf(), gr = view.querySelector('#grace');
+    if (gr) gr.style.display = st.tab === 'list' || st.tab === 'route' ? '' : 'none';
+    if (gr) gr.innerHTML = `<button data-v="" class="${rc ? '' : 'on'}">Any race</button>` + RACES[side].map(r => `<button data-v="${r[0]}" class="${rc && rc[0] === r[0] ? 'on' : ''}">${r[1]}</button>`).join('');
     const g = view.querySelector('#gctl'); if (g) g.style.display = st.tab === 'counter' ? 'none' : 'flex';
   }
   RF.pages.gear = {
@@ -116,12 +200,13 @@
       if (!st.modeSet && ['pve', 'pvp', 'lvl'].includes(RF.prefs.mode)) st.mode = RF.prefs.mode;
       st.lv = MILES.filter(m => m >= RF.prefs.level)[0] || 60;
       view.innerHTML = `<div class="head" style="align-items:center;flex-wrap:wrap;gap:10px"><div style="flex:1;min-width:260px"><h1>Gear and stats</h1><p>The best gear you can get at each level, one piece per slot, why it wins, and what came close. Every set is built by the same optimizer from every item in the Forever client.</p></div>
-        <div class="seg" id="gtabs"><button data-v="list" class="on">Best in slot</button><button data-v="stats">Stats and why</button><button data-v="counter">What counters you</button></div></div>
+        <div class="seg" id="gtabs"><button data-v="list" class="on">Best in slot</button><button data-v="route">Where to get it</button><button data-v="ench">Enchants</button><button data-v="stats">Stats and why</button><button data-v="counter">What counters you</button></div></div>
         <div id="gctl" style="display:flex;gap:8px;padding:0 16px 10px;flex-wrap:wrap;align-items:center;flex:none">
           <div class="seg" id="gspec"><button data-v="combat">Combat</button><button data-v="assassination">Assassination</button><button data-v="subtlety">Subtlety</button></div>
           <div class="seg" id="gmode"><button data-v="pve">PvE</button><button data-v="pvp">PvP</button><button data-v="lvl">Leveling</button></div>
           <div class="seg" id="gmile">${MILES.map(m => `<button data-v="${m}">Level ${m}</button>`).join('')}</div>
           <div class="seg" id="gside" title="Your faction; this also changes your profile"><button data-v="Horde">Horde</button><button data-v="Alliance">Alliance</button></div>
+          <div class="seg" id="grace" title="Your race: slots where its racials make another item better change to that item"></div>
           <span style="margin-left:auto;display:flex;gap:5px"><span class="chip g">Seen in Forever</span><span class="chip b">In client</span><span class="chip a">Classic data</span></span></div>
         <div id="gbody" class="col" style="flex:1;min-height:0"></div>`;
       draw(view);
@@ -132,7 +217,9 @@
         if ((t = e.target.closest('#gspec button'))) { st.spec = t.dataset.v; draw(view); return; }
         if ((t = e.target.closest('#gmode button'))) { st.mode = t.dataset.v; st.modeSet = true; draw(view); return; }
         if ((t = e.target.closest('#gmile button'))) { st.lv = +t.dataset.v; draw(view); return; }
+        if ((t = e.target.closest('#grace button'))) { RF.prefs.race = t.dataset.v || null; RF.save(); draw(view); return; }
         if ((t = e.target.closest('#gside button'))) { RF.prefs.faction = t.dataset.v; RF.save(); await ensurePlan(); draw(view); return; }
+        if ((t = e.target.closest('[data-eslot]'))) { st.eslot = t.dataset.eslot; draw(view); return; }
         if ((t = e.target.closest('[data-pslot]'))) { st.pslot = t.dataset.pslot; draw(view); }
       });
     }

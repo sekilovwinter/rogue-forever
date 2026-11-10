@@ -5,7 +5,7 @@ window.RF = (function () {
   const FILES = {
     abilities: 'assets/data/abilities.js', talents: 'assets/data/talents.js', races: 'assets/data/races.js',
     dungeons: 'assets/data/dungeons/index.js', gear: 'assets/data/gear.js', search: 'assets/data/search.js', videos: 'assets/data/videos.js',
-    quests: 'assets/data/quests/index.js', macros: 'assets/data/macros.js', legacy: 'assets/data/legacy.js', lw: 'assets/data/leatherworking.js', gearplan_h: 'assets/data/gearplan_h.js', gearplan_a: 'assets/data/gearplan_a.js',
+    quests: 'assets/data/quests/index.js', macros: 'assets/data/macros.js', legacy: 'assets/data/legacy.js', lw: 'assets/data/leatherworking.js', gearplan_h: 'assets/data/gearplan_h.js', gearplan_a: 'assets/data/gearplan_a.js', enchantplan_h: 'assets/data/enchantplan_h.js', enchantplan_a: 'assets/data/enchantplan_a.js', lwcheck: 'assets/data/lwcheck.js',
   };
   const fileOf = k => {
     if (FILES[k]) return FILES[k];
